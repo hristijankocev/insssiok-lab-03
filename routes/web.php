@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CKEditorController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -15,23 +16,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// TODO: Handle this
-//Route::get('/', function () {
-//    return view('welcome');
-//});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/', [PostController::class, 'index'])
         ->name('post.index');
 
     Route::get('/post/add', [PostController::class, 'create'])
         ->name('post.create');
+
+    Route::get('/post/{post:id}', [PostController::class, 'show'])
+        ->name('post.show');
+
     Route::post('/post/add', [PostController::class, 'store'])
         ->name('post.store');
+
+    Route::get('/all', [PostController::class, 'all'])
+        ->name('post.all');
+
+    Route::post('/ckeditor/upload', [CKEditorController::class, 'upload'])
+        ->name('ckeditor.image-upload');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

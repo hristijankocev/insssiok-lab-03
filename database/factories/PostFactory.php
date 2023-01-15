@@ -21,7 +21,6 @@ class PostFactory extends Factory
         $dateTime = fake()->dateTimeBetween('-20 years');
 
         return [
-            'title' => fake()->words(asText: true),
             'body' => fake()->paragraphs(5, asText: true),
             'user_id' => User::factory(),
             'created_at' => $dateTime,

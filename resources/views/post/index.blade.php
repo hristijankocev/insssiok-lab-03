@@ -1,8 +1,13 @@
+@php use Illuminate\Support\Facades\Route; @endphp
 @props(['posts'])
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Latest 3 posts') }}
+            @if(Route::current()->getName() === 'post.index')
+                {{ __('Latest 3 posts') }}
+            @else
+                {{ __('All posts') }}
+            @endif
         </h2>
     </x-slot>
 
@@ -13,9 +18,13 @@
                     @foreach($posts as $post)
                         <x-post-card :post="$post"></x-post-card>
                     @endforeach
+                    @if(method_exists($posts, 'links'))
+                        {{ $posts->links() }}
+                    @endif
                 </div>
             </div>
         </div>
+
     </div>
 
 </x-app-layout>

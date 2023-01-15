@@ -19,6 +19,13 @@ class PostController extends Controller
         ]);
     }
 
+    public function show(Post $post): Factory|View|Application
+    {
+        return view('post.show')->with([
+            'post' => $post
+        ]);
+    }
+
     public function create(): Factory|View|Application
     {
         return view('post.create');
@@ -27,7 +34,6 @@ class PostController extends Controller
     public function store(Request $request): Redirector|Application|RedirectResponse
     {
         $validated = $request->validate([
-            'title' => ['string', 'min:4', 'max:255'],
             'body' => ['string', 'min:4', 'max:65535'],
         ]);
 
@@ -36,5 +42,12 @@ class PostController extends Controller
         Post::create($validated);
 
         return redirect(route('post.index'));
+    }
+
+    public function all(): Factory|View|Application
+    {
+        return view('post.index')->with([
+            'posts' => Post::paginate(3)
+        ]);
     }
 }
